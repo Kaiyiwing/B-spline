@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>B-spline</title>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="B-spline.js"></script>
+</head>
+<body>
+<div>
+    <canvas id="canvas" width="800" height="800" style="border: 3px solid rgb(170, 170, 170);" ></canvas>
+</div>
+<div>
+    <textarea id="knots" rows="4" cols="100"></textarea>
+    <input type="button" value="change_knot" onclick="change_konts()" />
+</div>
+<div>
+    shift + 左键 创建点
+    <br>
+    点击b键 绘制B-spline曲线， 点击c键重置
+    <br>
+    下面的输入框可以操控knots
+</div>
+</body>
+</html>
