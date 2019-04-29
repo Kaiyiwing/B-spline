@@ -173,8 +173,9 @@ function doMousescroll(e)
         {
             weight[scroll_point] *= 1.01;
         }
+        draw_B();
     }
-    draw_B();
+
 
 }
 function upalt()
