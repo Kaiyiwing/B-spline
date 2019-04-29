@@ -1,9 +1,11 @@
 let canvas, ctx;
 let B_s = [];
 let points = [];
+let weight = [];
 let num = 0; // 记录顶点数
-let r = 2;
+let r = 4;
 let click_point = -1;
+let scroll_point = -1;
 let c_width=800, c_height=800;
 let knots = [];
 
@@ -11,6 +13,7 @@ window.onload = function()
 {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
+    canvas.addEventListener("mousewheel", doMousescroll, true);
     clickInit();
 
     $(document).keydown(function(e){
@@ -25,21 +28,16 @@ window.onload = function()
             // c
             clear();
         }
+
     });
 
+    $(document).keyup(function (e) {
+        if(e.which = 18)
+        {
+            upalt(e);
+        }
 
-    // let points = [
-    //     [100, 100],
-    //     [200, 200],
-    //     [300, 100],
-    //     [400, 200]
-    // ];
-    //
-    // for(let i=0; i<points.length; i++)
-    // {
-    //     drawCircle(points[i][0], points[i][1], 2, 'red');
-    // }
-
+    });
 };
 
 function draw_B()
@@ -78,7 +76,7 @@ function draw_B()
     }
 
     for(let t=0; t<1; t+=0.01) {
-        B_s.push(B_spline(t, degree, points, knots));
+        B_s.push(B_spline(t, degree, points, knots,weight));
     }
 
     ctx.beginPath();
@@ -98,6 +96,7 @@ function clear()
 {
     ctx.clearRect(0, 0, c_width, c_height);
     points = [];
+    weight = [];
     num = 0; // 记录顶点数
     click_point = -1;
 }
@@ -116,8 +115,18 @@ function onClick(e)
     if(e.shiftKey)
     {
         points.push([x,y]);
-        drawCircle(x,y);
+        weight.push(1.0);
+        drawCircle(x,y,1.0);
         num ++;
+    }else if(e.altKey)
+    {
+        for(let i = 0; i<points.length; i++)
+        {
+            if(cal_distance(x, y, points[i][0], points[i][1]) < 10)
+            {
+                scroll_point = i;
+            }
+        }
     }else
     {
         for(let i = 0; i<points.length; i++)
@@ -149,9 +158,29 @@ function onUp(e)
     {
         click_point = -1;
     }
-
 }
 
+function doMousescroll(e)
+{
+    if(e.preventDefault){/*FF 和 Chrome*/
+        e.preventDefault();// 阻止默认事件
+    }
+    if(scroll_point !== -1 && e.wheelDelta !== 0){
+        if(e.wheelDelta > 0)
+        {
+            weight[scroll_point] *= 0.99;
+        }else
+        {
+            weight[scroll_point] *= 1.01;
+        }
+    }
+    draw_B();
+
+}
+function upalt()
+{
+    scroll_point = -1;
+}
 function change_konts()
 {
     let input_s = $('#knots').val();
@@ -169,7 +198,7 @@ function draw()
     ctx.clearRect(0, 0, c_width, c_height);
     for(let i=0; i<points.length; i++)
     {
-        drawCircle(points[i][0],points[i][1]);
+        drawCircle(points[i][0],points[i][1],weight[i]);
     }
 }
 
@@ -235,11 +264,17 @@ function cal_distance(x0, y0, x1, y1)
     return Math.sqrt(Math.pow((x1-x0),2) + Math.pow((y1-y0),2));
 }
 
-function drawCircle(x, y)
+function drawCircle(x, y, weight)
 {
     ctx.beginPath();
-    ctx.arc(x,y,r,0,360,false);
+    ctx.arc(x,y,r*weight,0,360,false);
     ctx.fillStyle='red';
     ctx.fill();//画实心圆
     ctx.closePath();
+
+    ctx.font = "14px bold 黑体";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(weight.toFixed(2), x, y-10);
 }
