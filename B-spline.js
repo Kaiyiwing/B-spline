@@ -6,7 +6,7 @@ let num = 0; // 记录顶点数
 let r = 4;
 let click_point = -1;
 let scroll_point = -1;
-let c_width=800, c_height=800;
+let c_width=600, c_height=600;
 let knots = [];
 
 window.onload = function()
@@ -99,6 +99,7 @@ function clear()
     weight = [];
     num = 0; // 记录顶点数
     click_point = -1;
+    $('#knots').val('');
 }
 
 function clickInit() {

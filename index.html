@@ -7,20 +7,26 @@
     <script src="B-spline.js"></script>
 </head>
 <body>
-<div>
-    <canvas id="canvas" width="800" height="800" style="border: 3px solid rgb(170, 170, 170);" ></canvas>
-</div>
-<div>
-    <textarea id="knots" rows="4" cols="100"></textarea>
+<div style="text-align: center;">
+    <h1>B-spline</h1>
+    <div>
+        <canvas id="canvas" width="600" height="600" style="border: 3px solid rgb(170, 170, 170);" ></canvas>
+    </div>
+    <div>
+        <textarea id="knots" rows="4" cols="90" style="width:600px"></textarea>
+    </div>
     <input type="button" value="change_knot" onclick="change_konts()" />
-</div>
-<div>
-    shift + 左键 创建点, 左键按住可以拖动点, alt+左键点击点，然后滚动滚轮(alt 不松开)，可以更改点的权重。
-    <br>
-    点击b键 绘制B-spline曲线， 点击c键重置
-
-    <br>
-    下面的输入框可以操控knots
+    <div style="text-align: left; margin-left: 33%;">
+        <h2>操作说明</a></h2>
+        <ul>
+            <li><code>shift + 左键</code> 创建点,</li>
+            <li><code>左键</code>按住可以修改控制点的位置.</li>
+            <li><code>alt+左键</code>点击点，然后滚动滚轮(alt不松开)，可以更改点的权重。</li>
+            <li><code>b键</code> 绘制B-spline曲线。</li>
+            <li><code>c键</code>重置</li>
+            <li>在knots栏中，可以试试显示当前的knots，并支持修改。完成修改后，点击<code>change_knots</code>，即可显示修改。</li>
+        </ul>
+    </div>
 </div>
 </body>
 </html>
